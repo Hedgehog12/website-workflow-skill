@@ -23,8 +23,9 @@ you can debug HTML/CSS or read a diff.
   guidance (Z-pattern, F-pattern, Gutenberg diagram) for page layout.
 - Treats testing as the assistant's job: it drives the browser itself rather than asking you to
   click through the site.
-- Includes a legal checklist reflecting German requirements (Impressum, GDPR, cookie banner,
-  accessibility) — explicitly flagged as jurisdiction-specific, adapt it for your own country.
+- Asks which market(s) the site is for (where the business is based, where its customers are),
+  then researches that market's actual legal requirements (business disclosure, privacy law,
+  cookie consent, accessibility) instead of assuming any one country's rules by default.
 
 ## Installing
 
@@ -49,15 +50,19 @@ For code review and security review steps in phase 6, it references Claude Code'
 
 ## Customizing
 
-- **Legal section:** written for Germany/EU. If you're building for a different jurisdiction,
-  replace the checklist with your local requirements before relying on it.
+- **Legal & compliance:** market-agnostic by design — phase 0 asks which country/countries the
+  site is for, and phase 3 researches that market's actual requirements at build time rather than
+  the skill hardcoding one country's rules. If you only ever build for one market, you can trim
+  phase 0's question and phase 3's research step down to that market directly.
 - **Language:** written in English. If your workflow with clients happens in another language,
   feel free to translate — the phase structure and rules translate directly.
 
 ## Disclaimer
 
-The legal checklist in this skill is not legal advice — it exists so the topic isn't forgotten,
-not to replace a lawyer or a jurisdiction-appropriate generator/template.
+The legal guidance in this skill is not legal advice, for any jurisdiction — it exists so the
+category of requirement (business disclosure, privacy policy, cookie consent, accessibility, etc.)
+isn't forgotten. Always have the actual text/mechanism checked by a lawyer or a
+jurisdiction-appropriate generator/template for the market in question.
 
 ## License
 

@@ -144,6 +144,13 @@ actually needs — don't run through everything by default.
   phase 4 and phase 6) — this unlocks CRO-specific structure and review
   points based on conversion-focused landing-page strategy (see the Value
   Equation framework in phase 4).
+- **Also ask: "Which market(s) is this website for?"** — i.e. where is the
+  business legally based, and which country/countries are its customers or
+  visitors in. Don't assume any default market (not even the assistant's or
+  the user's own country) — always ask, since this drives the legal/
+  compliance research in phase 3 (see the "Legal & compliance" section
+  below). If the client sells into more than one country, note all of them
+  — a project can be subject to more than one jurisdiction at once.
 - Briefly confirm what follows from this ("Ok, so no proposal/sign-off,
   with analytics"), so the user knows what's different in this project.
 - Don't re-ask this decision at every step — decide once, note it in
@@ -213,6 +220,14 @@ done), not before.
   best practices, known pitfalls).
 - If useful, look at 2-3 reference sites/solutions that already do
   something similar well.
+- **Legal/compliance research for the market(s) identified in phase 0:**
+  look up, for each relevant jurisdiction, what's currently mandatory for a
+  commercial website there (see the "Legal & compliance" section below for
+  the categories to check — business/operator disclosure, data-protection
+  law, cookie/tracking consent rules, accessibility law, any sector-specific
+  rules). Requirements genuinely differ by country — don't reuse a checklist
+  from a previous project without re-checking it against this project's
+  market(s). Summarize concretely what applies here, in plain language.
 - Summarize the result briefly and in plain language: what was found, what
   it means for the plan — no research report, just the essence.
 - Don't skip this phase even if the project looks small: it's the reason
@@ -232,9 +247,11 @@ any code exists — based on the idea (phase 2) and research (phase 3).
   non-technical language before building starts.
 - Decide the build order: scaffold + most important page first, then the
   rest — so something visible exists early.
-- Include a legal-notice page and a privacy-policy page in the site
-  structure from the start (see the "Legal" section below) — don't bolt
-  them on right before release.
+- Include whatever legal/compliance pages phase 3's research identified as
+  mandatory for this project's market(s) (e.g. an operator/business
+  disclosure page, a privacy policy) in the site structure from the start
+  (see the "Legal & compliance" section below) — don't bolt them on right
+  before release.
 - **Decide a model per task (once the plan is set):** briefly research
   current model capabilities, then estimate per planned task which model
   fits and note it in the plan:
@@ -471,9 +488,12 @@ applies instead of doing it routinely.
    Search Console, and trigger indexing of the pages. Why: without active
    submission, it can take weeks for Google to find the site on its own.
 
-- Hard check before going live: legal notice + privacy policy present (see
-  the "Legal" section)? If something's missing, point it out actively and
-  don't release silently.
+- Hard check before going live: are the specific legal/compliance items
+  phase 3 identified for this project's market(s) (e.g. operator/business
+  disclosure, privacy policy, cookie consent, accessibility where it
+  applies) actually present and correct (see the "Legal & compliance"
+  section)? If something's missing, point it out actively and don't
+  release silently.
 - **Only if analytics was requested (phase 0):** set up a
   privacy-friendly tool (e.g. one that doesn't rely on invasive tracking)
   — this feeds directly into the privacy policy.
@@ -522,38 +542,65 @@ auctions).
 
 ---
 
-## Legal (jurisdiction-specific — the checklist below reflects German law;
-adapt or replace it for wherever the site is legally targeted)
+## Legal & compliance (market-specific — determined in phase 0, researched
+in phase 3)
 
-Goal: the site doesn't go live without these points being addressed —
-fines are a real risk for the client/user, even for small one-person sites,
-under German law (and many EU jurisdictions have comparable requirements).
+Goal: never assume any one country's rules by default — including the
+assistant's own or the user's own. Every website has a legal context shaped
+by (a) where the business running it is legally based, and (b) which
+country/countries its visitors or customers are in. Both matter, and a
+project can be subject to more than one jurisdiction at once (e.g. a German
+business selling to US or UK customers).
 
-- **Legal notice / "Impressum" (German law, § 5 DDG):** required for
-  practically every commercial site under German law, even for sole
-  proprietors — not just registered companies. Needs: name, a physical
-  postal address (no PO box), email, and for corporations also the legal
-  form/company register entry. Get these details exclusively from the
-  user/client themselves — never invent or guess them.
-- **Privacy policy (GDPR, applies EU-wide):** must document every actual
-  data processing activity (server logs/hosting, contact form, newsletter,
-  cookies/tracking, embedded services like web fonts, maps, analytics).
-  Prepare the structure, fill in the actual services only once it's clear
-  what the site actually embeds.
-- **Cookie banner:** only needed if non-essential cookies/tracking are
-  used. Declining must be exactly as easy as accepting — a plain "Accept"
-  button alone is not legally sufficient under GDPR/ePrivacy.
-- **Accessibility (e.g. Germany's BFSG, in effect since 2025-06-28, or
-  equivalent local accessibility law):** mainly affects online shops and
-  certain digital services aimed at consumers. For relevant projects,
-  check during phase 3 (research) whether it applies, and draw the
-  consequences for phase 4 (plan).
+- **Phase 0 asks which market(s) apply; this section is what to research
+  and check once the answer is known.** Never skip the question and never
+  default to a specific country's checklist just because it's the most
+  familiar one.
+- **Phase 3 does the actual research**, per relevant jurisdiction. The
+  categories below are what to check for — not a fixed, universal list of
+  rules, since the concrete rule (and whether it applies at all) depends on
+  the market:
+  - **Mandatory business/operator disclosure.** Many jurisdictions require
+    identifying who runs a commercial site (name, contact, sometimes a
+    physical address or registration number) — e.g. an "Impressum" under
+    German/Austrian law, similar operator-identification duties elsewhere
+    in the EU, or state/sector-specific business-disclosure rules in places
+    like the US. Get the actual details (legal name, address, registration
+    numbers, etc.) only from the user/client — never invent or guess them.
+  - **Data protection / privacy law.** What a privacy policy must disclose,
+    and whether a specific consent mechanism is required, differs sharply
+    by market — e.g. GDPR across the EU/EEA and UK, CCPA/CPRA in
+    California, PIPL in China, LGPD in Brazil, PIPEDA in Canada, or no
+    comparable law at all in some markets. Document every data-processing
+    activity the site actually has (hosting/server logs, contact form,
+    newsletter, cookies/tracking, embedded third-party services) once
+    it's clear what the site embeds.
+  - **Cookie/tracking consent rules.** Opt-in-by-default (e.g. under
+    GDPR/ePrivacy in the EU) vs. opt-out/notice-based regimes (e.g. much of
+    the US) are genuinely different requirements, not a stylistic choice —
+    check which applies for this market before deciding how the banner (if
+    any) behaves.
+  - **Accessibility law**, if it applies to this kind of site/business in
+    this market (e.g. the European Accessibility Act and Germany's BFSG,
+    the ADA in the US, AODA in Ontario, or none in others).
+  - **Sector-specific rules**, if relevant (e.g. e-commerce, health,
+    finance, children's data) — these can add requirements on top of the
+    general ones above.
+  Summarize findings concretely and in plain language for this specific
+  project — not a general legal essay, and not a copy of a previous
+  project's checklist without re-verifying it against this one's market(s).
+- **Phase 4 plans it in:** whatever pages/mechanisms phase 3 identified as
+  mandatory (e.g. an operator/contact page, a privacy policy, a cookie
+  banner) go into the site structure from the start.
+- **Phase 6 and phase 7 check it, hard/blocking:** before release, confirm
+  the specific items phase 3 identified are actually present and correct —
+  don't let a project ship with a gap just because this section's example
+  list doesn't happen to name it for that market.
 
-Important: this is not legal advice. This section exists so these building
-blocks aren't forgotten — have the actual legal text double-checked by the
-user (a lawyer, or a recognized generator/template for their jurisdiction)
-when in doubt, and adapt the whole checklist to whatever country the site
-is actually operating in.
+Important: this is not legal advice, in any jurisdiction. This section
+exists so the *category* of legal requirement is never missed — the actual
+text/mechanism should be verified by the user (a local lawyer, or a
+jurisdiction-appropriate generator/template) before relying on it.
 
 ---
 
