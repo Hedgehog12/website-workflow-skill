@@ -542,8 +542,7 @@ auctions).
 
 ---
 
-## Legal & compliance (market-specific — determined in phase 0, researched
-in phase 3)
+## Legal & compliance (market-specific — determined in phase 0, researched in phase 3)
 
 Goal: never assume any one country's rules by default — including the
 assistant's own or the user's own. Every website has a legal context shaped
