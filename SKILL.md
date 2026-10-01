@@ -60,6 +60,14 @@ configuration options, or architecture "for later" that nobody needs right
 now. Prefer duplicated simple code over a premature, clever abstraction.
 The goal must be met — but with the leanest solution that gets there.
 
+**Production baseline is built in, never bolted on.** Security, error
+handling, performance, and recoverability (see the "Production baseline"
+section below) are built at the moment their trigger appears in
+development — the first form, the first login, the first database table,
+the first API endpoint. A feature isn't done until its baseline items are
+in. Phase 6 only *verifies* them; if phase 6 finds one missing, that's a
+phase 5 miss to fix, not a release-time to-do list.
+
 **Work token-consciously.** Thorough testing (see above) doesn't mean
 working wastefully — avoid bloat, not thoroughness:
 - Read/search targeted, not broad — load only the relevant file excerpts or
@@ -252,6 +260,14 @@ any code exists — based on the idea (phase 2) and research (phase 3).
   disclosure page, a privacy policy) in the site structure from the start
   (see the "Legal & compliance" section below) — don't bolt them on right
   before release.
+- **Decide the production baseline (once the stack is chosen):** go through
+  the "Production baseline" section below and decide, per item, whether it
+  applies to this project. Record it in `BRIEF.md` as a short block
+  (`item → applies? → status`), e.g. `5 Rate limiting → yes (contact form)
+  → open`. This block is updated during phase 5 and is how any later
+  session can see what's built. Pick hosting that provides instant
+  rollback and logs/alerts out of the box (items 8 and 9) — that decision
+  is made here, not at release.
 - **Decide a model per task (once the plan is set):** briefly research
   current model capabilities, then estimate per planned task which model
   fits and note it in the plan:
@@ -346,6 +362,23 @@ first (see the "code as simple as possible" core rule).
 - If a client requirement can't be implemented cleanly/sensibly: say so
   transparently and suggest a better alternative, instead of silently
   building a workaround.
+- **Baseline in the scaffold (first build step):** custom 404/500 pages
+  and a generic error handler (item 6), logging + at least one alert
+  (item 8), deployment via the rollback-capable hosting chosen in phase 4
+  (item 9), and — as soon as an API exists — a CORS allowlist (item 4).
+  Only the items marked "applies" in `BRIEF.md`.
+- **Baseline per feature, at the moment it's built** (see the trigger
+  column in the "Production baseline" section):
+  - Form → 3 input validation, 5 rate limit/spam protection, 6 error state
+  - Login/accounts → 1 ownership checks, 2 reset expiry, 5 brute-force
+    limit
+  - Database table/query → 1 ownership checks, 7 indexes
+  - API endpoint → 1, 3, 4, 5, 6
+  A feature only counts as done once its items are built and checked, and
+  the status in `BRIEF.md` is updated to `done`. Mention it in the
+  what+why update in one sentence (e.g. "The form now also blocks spam
+  bots and limits submissions — otherwise it can be abused to flood your
+  inbox.").
 
 **For tasks marked loop-suitable in phase 4 — loop preparation:** before
 such a task runs autonomously, define four building blocks:
@@ -353,7 +386,9 @@ such a task runs autonomously, define four building blocks:
   built/changed — not a vague description.
 - **Checklist (definition of done):** unambiguous, checkable completion
   criteria. No subjective goals like "looks good" — every point must be
-  objectively verifiable.
+  objectively verifiable. Always includes the production-baseline items
+  that apply to this task (e.g. for an API task: "user A cannot read user
+  B's record" as a test).
 - **Inspector:** a check mechanism that automatically evaluates every
   iteration (e.g. linter, tests, build checks, DOM/HTML validation,
   automated browser checks).
@@ -399,8 +434,18 @@ involved on a demonstrated failure or a technically impossible case.
 - Use available browser-automation tools to walk through the real user
   path (golden path + likely error cases: empty form, wrong format,
   mobile view).
-- For forms, login, payments, or other sensitive areas: also consider a
-  dedicated security review.
+- **Production-baseline verification (hard, blocking):** verify — don't
+  build — every item marked "applies" in `BRIEF.md`, using the "Verify"
+  column of the "Production baseline" section (request another user's
+  ID, reuse an expired reset link, submit XSS/SQL payloads, send a
+  foreign-origin request, hammer an endpoint until it returns 429, force
+  an error and confirm no stack trace shows, confirm indexes exist, fire
+  a test alert). Any failure goes back to phase 5 and blocks release. If
+  something is found that was never built at all: fix it, and note
+  briefly that it should have been built in phase 5.
+- Whenever the project has a backend (login, database, API, payments):
+  run a dedicated security review — mandatory, not optional. For purely
+  static sites, only the form-related items apply.
 - **Responsive check:** explicitly click through mobile, tablet, and
   desktop (not just one size), even if general testing partially covers
   this.
@@ -503,8 +548,14 @@ applies instead of doing it routinely.
 - **Only for client projects — credential handover:** hand over hosting/
   domain access cleanly and securely to the client (no plaintext in chat
   history or similar). Briefly explain which access the client needs now.
+- **Rollback & alerts before go-live (item 8 + 9):** confirm the previous
+  version can be restored in one step (do one test rollback on a preview/
+  staging deployment if the host allows it), and that the alert from
+  phase 5 reaches a real channel (the user's email/phone) — not only a log
+  nobody reads.
 - After release: briefly check whether the live site actually works as
-  expected (not just tested locally).
+  expected (not just tested locally), including that the custom error
+  page shows on the live domain (open a non-existent URL).
 - **Suggest impeccable:** run `/document` again to bring `DESIGN.md` up to
   the final state — so later changes/new sessions know the grown design
   system.
@@ -539,6 +590,49 @@ auctions).
 - Only bring this up once there's actual ongoing traffic — usually not yet
   relevant right after release, better suited to a later maintenance
   conversation.
+
+---
+
+## Production baseline (built during phase 5, verified in phase 6)
+
+Goal: every site ships secure, debuggable, and recoverable — without a
+last-minute checklist. Phase 4 decides which items apply, phase 5 builds
+each one when its trigger appears, and phase 6 only verifies. Keep it
+proportional ("code as simple as possible"): a static portfolio or landing
+page typically needs only 6 (custom 404) and 9 (the host's built-in
+rollback), plus 3 and 5 if it has a contact form. Everything else is
+marked N/A in `BRIEF.md`. Prefer the platform's built-in feature over
+building one yourself (managed auth, managed database, the host's
+rollback/logs).
+
+| # | Item | Applies when | Built at (trigger) | Verify (phase 6) |
+|---|---|---|---|---|
+| 1 | Data access control | User accounts / per-user data | First DB table or API endpoint with user data | Logged in as user A, request user B's record by ID → denied |
+| 2 | Password-reset expiry | Own login with password reset | Building the reset flow | Reset link is single-use and expired after ~30 min |
+| 3 | Input validation & sanitization | Any form or input field | Each form/endpoint as it's built | XSS payload (`<script>`) and SQL payload (`' OR 1=1--`) are rejected or rendered harmless |
+| 4 | Domain-restricted API access (CORS) | Own API/backend | Scaffolding the API | Request from a foreign origin is blocked by the browser |
+| 5 | Rate limiting | Forms, login, API | Each form/login/endpoint as it's built | Rapid repeated requests → `429`/blocked; contact form has spam protection |
+| 6 | Custom error handling | Always | Scaffold | Non-existent URL → custom 404; forced server error → friendly page, no stack trace |
+| 7 | Database indexing | Own database | Creating each table/query | Main queries and lookup fields (e.g. user ID, email, slug) have indexes |
+| 8 | Logging & monitoring | Always (at least uptime) | Scaffold / first deploy | Test error appears in logs; test alert reaches the user |
+| 9 | Rollback strategy | Always | Hosting choice (phase 4) + first deploy | Previous deployment can be restored in one step |
+
+Getting these right (don't build a false sense of security):
+- **1: UUIDs are not access control.** They only stop people from guessing
+  IDs. Every read and write must check on the server that the record
+  belongs to the logged-in user (e.g. row-level security in the database,
+  or an ownership check in every endpoint).
+- **2:** with a managed auth provider, set the reset-link lifetime in the
+  provider's settings instead of building a reset flow yourself.
+- **3: "Sanitize" means** parameterized queries (never building SQL from
+  user text), server-side validation (client-side checks are only for
+  UX), and escaping output when user text is displayed — not stripping
+  characters from strings.
+- **4: CORS only restricts browsers,** not scripts or other servers. It's
+  one layer — pair it with authentication and rate limiting.
+- **9:** use the host's instant rollback / previous-deployment feature;
+  don't hand-build a blue-green setup unless the project really runs its
+  own servers.
 
 ---
 

@@ -23,6 +23,11 @@ you can debug HTML/CSS or read a diff.
   guidance (Z-pattern, F-pattern, Gutenberg diagram) for page layout.
 - Treats testing as the assistant's job: it drives the browser itself rather than asking you to
   click through the site.
+- Builds a production baseline (access control, reset-link expiry, input validation, CORS, rate
+  limiting, custom error pages, database indexes, logging/alerts, rollback) *during* development
+  when each trigger appears — the first form, login, table, or endpoint — scaled to what the
+  project actually needs. The testing phase only verifies it; nothing is left for a last-minute
+  pre-deployment checklist.
 - Asks which market(s) the site is for (where the business is based, where its customers are),
   then researches that market's actual legal requirements (business disclosure, privacy law,
   cookie consent, accessibility) instead of assuming any one country's rules by default.
